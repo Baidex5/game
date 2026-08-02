@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Шахта Онлайн</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(to bottom, #1a1a2e, #16213e); color: white; text-align: center; padding: 40px; }
+        .card { background: rgba(255, 255, 255, 0.1); padding: 30px; border-radius: 15px; display: inline-block; box-shadow: 0 8px 32px rgba(0,0,0,0.3); backdrop-filter: blur(10px); }
+        
+        /* Стили для горы */
+        svg { width: 80px; height: 80px; display: block; margin: 0 auto 15px auto; }
+        
+        h1 { margin: 0; color: #fbbf24; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        
+        .gold-box { font-size: 2.5em; color: #fcd34d; font-weight: bold; margin: 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); transition: color 0.3s, transform 0.2s; }
+        .gold-flash { color: #fff !important; text-shadow: 0 0 10px rgba(252, 211, 77, 0.8); transform: scale(1.05); }
+
+        button { background: #e94560; color: white; border: none; padding: 15px 40px; font-size: 1.2em; cursor: pointer; border-radius: 8px; transition: transform 0.1s, background 0.2s; font-weight: bold; }
+        button:hover { background: #c0392b; transform: scale(1.05); }
+        p { color: rgba(255,255,255,0.8); max-width: 500px; margin: 0 auto; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <!-- Аватарка-гора -->
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 90L50 20L90 90H10Z" fill="#34495e" stroke="#2c3e50" stroke-width="4"/>
+            <path d="M30 60L50 30L70 60H30Z" fill="#4F6272" opacity="0.8"/>
+            <path d="M45 55L55 45M55 45L65 55M55 45L55 65" stroke="#F1C40F" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        
+        <h1>Шахта Онлайн</h1>
+        <p>Твой личный симулятор добычи золота. Нажми кнопку, чтобы заработать!</p>
+        
+        <div class="gold-box" id="goldDisplay">Загрузка...</div>
+        
+        <button id="mineBtn">⛏️ Добыть золото</button>
+    </div>
+
+    <script>
+        // Логика полностью внутри браузера. Сервер не нужен!
+        let gold = localStorage.getItem('shahta_gold_v2');
+        if (!gold) {
+            gold = 1300;
+        } else {
+            gold = parseInt(gold); 
+        }
+
+        const goldDisplay = document.getElementById('goldDisplay');
+
+        function updateGold() {
+            goldDisplay.innerText = "Золото: " + gold + " 💰";
+            localStorage.setItem('shahta_gold_v2', gold);
+        }
+
+        updateGold();
+
+        document.getElementById('mineBtn').addEventListener('click', function() {
+            const earned = 50; 
+            gold += earned;
+            updateGold();
+            
+            goldDisplay.classList.add('gold-flash');
+            setTimeout(() => {
+                goldDisplay.classList.remove('gold-flash');
+            }, 300);
+        });
+    </script>
+</body>
+</html>
