@@ -3,246 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Файзян добытчик </title>
+    <title>Семья [Фамилия]: Наша история</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(to bottom, #1a1a2e, #16213e); color: white; text-align: center; padding: 20px; margin: 0; }
-        .card { background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; display: inline-block; box-shadow: 0 8px 32px rgba(0,0,0,0.3); backdrop-filter: blur(10px); max-width: 600px; width: 100%; }
+        :root { --primary: #d4a373; --dark: #2c3e50; --light: #ecf0f1; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; color: var(--dark); }
         
-        h1 { margin: 0; color: #fbbf24; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        p { color: rgba(255,255,255,0.8); margin: 5px 0; font-size: 0.9em; }
+        /* Шапка */
+        header { text-align: center; padding: 60px 20px; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1517849845537-4d257902454a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); background-size: cover; color: white; }
+        h1 { margin: 0 0 10px; font-size: 3em; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); }
+        p.subtitle { font-size: 1.2em; max-width: 600px; margin: 0 auto; line-height: 1.6; }
 
-        /* Статистика */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; text-align: left; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; }
-        .stat-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
-        .stat-value { float: right; color: #ffd700; font-weight: bold; }
+        /* Навигация */
+        nav { text-align: center; background: white; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        nav button { background: none; border: 2px solid var(--primary); color: var(--primary); padding: 10px 20px; margin: 0 5px; cursor: pointer; font-weight: bold; transition: all 0.3s; font-size: 1em; }
+        nav button:hover, nav button.active { background: var(--primary); color: white; transform: translateY(-2px); }
 
-        /* Кнопки действий */
-        .action-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 20px; }
-        button { background: #e94560; color: white; border: none; padding: 12px 20px; font-size: 1em; cursor: pointer; border-radius: 8px; transition: transform 0.1s, background 0.2s; font-weight: bold; flex: 1 1 auto; min-width: 140px; }
-        button:hover { background: #c0392b; transform: scale(1.05); }
-        button.disabled { background: #555; cursor: not-allowed; transform: none; opacity: 0.6; }
-        button.factory-btn { background: #2c3e50; } /* Тёмная кнопка для фабрики */
-        button.market-btn { background: #f39c12; color: black; } /* Яркая для рынка */
+        /* Секции */
+        section { padding: 40px 20px; max-width: 1000px; margin: 0 auto 40px; display: none; animation: fadeIn 0.8s ease; }
+        section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Магазин кирок */
-        #shopWindow { display: none; margin-top: 20px; padding: 15px; background: rgba(0, 0, 0, 0.3); border-radius: 10px; border: 1px solid #fff; }
-        .shop-item { margin: 15px 0; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; }
-        .price { color: #ffd700; font-weight: bold; }
-        .desc { color: #aaa; font-size: 0.85em; }
+        .story-text { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); line-height: 1.8; }
+        .story-img { width: 100%; max-width: 800px; height: auto; border-radius: 12px; margin-top: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
 
-        @media (max-width: 480px) {
-            .stats-grid { grid-template-columns: 1fr; }
-            button { width: 100%; box-sizing: border-box; }
-        }
+        /* Галерея */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+        .gallery-item img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; transition: transform 0.3s; cursor: pointer; }
+        .gallery-item img:hover { transform: scale(1.05); }
+
+        /* Видео */
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 800px; margin: 0 auto; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        /* Гостевая книга */
+        #guestbook-area { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto; }
+        textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; resize: vertical; min-height: 80px; }
+        button.submit-btn { background: var(--dark); color: white; border: none; padding: 12px 25px; cursor: pointer; border-radius: 6px; font-size: 1em; }
+        .comment { background: #eee; padding: 15px; margin-top: 10px; border-left: 5px solid var(--primary); border-radius: 6px; }
+        .comment-author { font-weight: bold; color: var(--primary); }
+
+        /* Контакты */
+        .contacts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .contact-card { background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .contact-icon { font-size: 2em; margin-bottom: 10px; }
+
+        footer { text-align: center; padding: 30px; background: var(--dark); color: white; margin-top: 40px; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>🏭 Файзян и Шахта </h1>
-        <p>Добывай руду, плавь слитки, продавай и покупай лучшие кирки!</p>
+    <header>
+        <h1>Семья Ивановых ❤️</h1>
+        <p class="subtitle">Наша история, наши моменты, наша любовь. Здесь хранится всё, что дорого нашему сердцу.</p>
+    </header>
 
-        <!-- Статистика -->
-        <div class="stats-grid">
-            <div class="stat-item">Золото: <span class="stat-value" id="goldVal">0</span></div>
-            <div class="stat-item">Текущая сила: <span class="stat-value" id="powerVal">50</span>/клик</div>
-            <div class="stat-item">Железо: <span class="stat-value" id="ironVal">0</span></div>
-            <div class="stat-item">Алмазы: <span class="stat-value" id="diamondVal">0</span></div>
-            <div class="stat-item">Слитки: <span class="stat-value" id="ingotVal">0</span> (готовы к продаже)</div>
+    <nav>
+        <button onclick="showSection('home')" class="active">🏠 Главная</button>
+        <button onclick="showSection('story')">💍 История любви</button>
+        <button onclick="showSection('gallery')">📸 Фотоальбом</button>
+        <button onclick="showSection('video')">🎬 Видео</button>
+        <button onclick="showSection('guestbook')">💬 Гостевая книга</button>
+        <button onclick="showSection('contacts')">📞 Контакты</button>
+    </nav>
+
+    <!-- ГЛАВНАЯ -->
+    <section id="home" class="active">
+        <div class="story-text">
+            <h2>Добро пожаловать в наш дом!</h2>
+            <p>Здесь мы собираем наши самые тёплые воспоминания. Этот сайт — наш маленький цифровой альбом. Заходите почаще, мы всегда рады видеть вас здесь!</p>
+            <br>
+            <img src="https://images.unsplash.com/photo-1501630834273-47139e6f0baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Семья" class="story-img">
         </div>
+    </section>
 
-        <!-- Основные кнопки -->
-        <div class="action-buttons">
-            <button onclick="mineResources()" id="mineBtn">⛏️ Добыть руду</button>
-            <button onclick="openShop()" id="shopBtn">🛒 Магазин кирок</button>
-            <button class="factory-btn" onclick="smeltFactory()">🏭 Переплавить в слитки</button>
-            <button class="market-btn" onclick="sellMarket()">💰 Продать ресурсы</button>
+    <!-- ИСТОРИЯ -->
+    <section id="story">
+        <div class="story-text">
+            <h2>Как всё началось...</h2>
+            <p><strong>День знакомства:</strong> Это было дождливое утро в парке. Мы оба забыли зонты и прятались под одним деревом. С тех пор мы всегда делим один зонт на двоих. 😄</p>
+            <p><strong>Предложение:</strong> Он сделал предложение на крыше, где мы любили смотреть на звёзды. Сказал, что я — его самая яркая звезда. ✨</p>
+            <p><strong>Свадьба:</strong> В тот день шёл снег, и казалось, что сама природа посыпала нас конфетти. Было так красиво, что даже фотограф плакал от умиления. </p>
+            <img src="https://images.unsplash.com/photo-1559016183-a88c5e01af52?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Свадьба" class="story-img">
         </div>
+    </section>
 
-        <!-- Магазин -->
-        <div id="shopWindow">
-            <h3>🛒 Магазин кирок</h3>
-            <p>Улучшай инструмент, чтобы добывать быстрее!</p>
+    <!-- ГАЛЕРЕЯ -->
+    <section id="gallery">
+        <h2 style="text-align:center;">Фотоальбом</h2>
+        <div class="gallery-grid">
+            <!-- Замени src на ссылки на свои фото -->
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1521587760476-6c92a2b3a3db?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Отдых"></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1511632765486-269436f1b62f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Дети"></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1493976040394-765decd8e9ec?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Дом"></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Праздник"></div>
+        </div>
+    </section>
+
+    <!-- ВИДЕО -->
+    <section id="video">
+        <h2 style="text-align:center;">Наши моменты</h2>
+        <p style="text-align:center; margin-bottom:20px;">Наш любимый танец на свадьбе. Посмотрите, как мы кружимся!</p>
+        <!-- Вставь сюда ID видео с YouTube вместо "dQw4w9WgXcQ" -->
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0" title="Свадебный танец" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <!-- ГОСТЕВАЯ КНИГА -->
+    <section id="guestbook">
+        <div id="guestbook-area">
+            <h2>Оставьте нам пару слов!</h2>
+            <textarea id="messageInput" placeholder="Напишите что-нибудь тёплое для нашей семьи..."></textarea>
+            <button class="submit-btn" onclick="addComment()">Отправить ❤️</button>
             
-            <div class="shop-item">
-                <b>🪓 Обычная кирка (50/клик)</b><br>
-                <span class="desc">Базовая модель.</span>
-                <br><button class="disabled">Уже у тебя</button>
-            </div>
-
-            <div class="shop-item">
-                <b>🔩 Стальная кирка (100/клик)</b><br>
-                <span class="desc">Цена: 1000 💰. Добывает в 2 раза быстрее.</span>
-                <button onclick="buyPickaxe('steel')" id="buySteel">Купить за 1000</button>
-            </div>
-
-            <div class="shop-item">
-                <b>💎 Алмазная кирка (200/клик)</b><br>
-                <span class="desc">Цена: 5000 💰. Максимальная скорость.</span>
-                <button onclick="buyPickaxe('diamond')" id="buyDiamond">Купить за 5000</button>
-            </div>
-
-            <button onclick="closeShop()" style="margin-top:10px; background:#333;">← Закрыть</button>
+            <div id="commentsList" style="margin-top:30px;"></div>
         </div>
-    </div>
+    </section>
+
+    <!-- КОНТАКТЫ -->
+    <section id="contacts">
+        <h2 style="text-align:center;">Контакты и важные даты</h2>
+        <div class="contacts-grid">
+            <div class="contact-card">
+                <div class="contact-icon">🏠</div>
+                <h3>Где мы живём</h3>
+                <p>г. Москва, ул. Солнечная, д. 10</p>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">🎂</div>
+                <h3>Дни рождения</h3>
+                <p>Папа: 15 мая<br>Мама: 23 сентября<br>Дети: 12 января</p>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">📱</div>
+                <h3>Связь</h3>
+                <p>WhatsApp: +7 (999) 000-00-00<br>Telegram: @family_chat</p>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">💌</div>
+                <h3>Почта</h3>
+                <p>family.ivanov@mail.ru</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Сделано с любовью для нашей семьи. © 2024</p>
+        <p>Сайт создан на HTML + CSS + JS</p>
+    </footer>
 
     <script>
-        // --- ДАННЫЕ ИГРЫ ---
-        // Загружаем из памяти браузера
-        let gold = localStorage.getItem('shahta_gold_v5') || 1300;
-        gold = parseInt(gold);
+        // Переключение вкладок
+        function showSection(sectionId) {
+            // Скрываем все секции
+            document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+            // Убираем активный класс у кнопок
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
 
-        let iron = localStorage.getItem('shahta_iron_v5') || 0;
-        iron = parseInt(iron);
-
-        let diamond = localStorage.getItem('shahta_diamond_v5') || 0;
-        diamond = parseInt(diamond);
-
-        let ingots = localStorage.getItem('shahta_ingots_v5') || 0;
-        ingots = parseInt(ingots);
-
-        // Текущая сила добычи
-        let power = 50; 
-        
-        // Купленные кирки (чтобы не купить дважды)
-        let hasSteel = localStorage.getItem('shahta_steel_v5') === 'true';
-        let hasDiamond = localStorage.getItem('shahta_diamond_v5') === 'true';
-
-        // Элементы DOM
-        const el = (id) => document.getElementById(id);
-
-        function saveData() {
-            localStorage.setItem('shahta_gold_v5', gold);
-            localStorage.setItem('shahta_iron_v5', iron);
-            localStorage.setItem('shahta_diamond_v5', diamond);
-            localStorage.setItem('shahta_ingots_v5', ingots);
-            localStorage.setItem('shahta_steel_v5', hasSteel);
-            localStorage.setItem('shahta_diamond_v5', hasDiamond);
+            // Показываем нужную
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
         }
 
-        function updateUI() {
-            el('goldVal').innerText = gold;
-            el('ironVal').innerText = iron;
-            el('diamondVal').innerText = diamond;
-            el('ingotVal').innerText = ingots;
-            el('powerVal').innerText = power;
+        // Гостевая книга (сохраняется в браузере)
+        function addComment() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if (!text) return alert('Пожалуйста, напишите что-нибудь!');
 
-            // Блокировка кнопок покупки
-            const steelBtn = el('buySteel');
-            const diamondBtn = el('buyDiamond');
-
-            if (hasSteel) {
-                steelBtn.innerText = "Куплено!";
-                steelBtn.classList.add('disabled');
-                steelBtn.disabled = true;
-            } else if (gold < 1000) {
-                steelBtn.innerText = "Не хватает золота!";
-                steelBtn.classList.add('disabled');
-                steelBtn.disabled = true;
-            } else {
-                steelBtn.innerText = "Купить за 1000";
-                steelBtn.classList.remove('disabled');
-                steelBtn.disabled = false;
-            }
-
-            if (hasDiamond) {
-                diamondBtn.innerText = "Куплено!";
-                diamondBtn.classList.add('disabled');
-                diamondBtn.disabled = true;
-            } else if (gold < 5000) {
-                diamondBtn.innerText = "Не хватает золота!";
-                diamondBtn.classList.add('disabled');
-                diamondBtn.disabled = true;
-            } else {
-                diamondBtn.innerText = "Купить за 5000";
-                diamondBtn.classList.remove('disabled');
-                diamondBtn.disabled = false;
-            }
-        }
-
-        // 1. ДОБЫЧА РУДЫ
-        function mineResources() {
-            iron += Math.floor(power / 10); // Добываем железо
+            const list = document.getElementById('commentsList');
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment';
+            commentDiv.innerHTML = `<span class="comment-author">Гость:</span><br>${text}`;
             
-            // Шанс на алмаз (1 к 20 кликов)
-            if (Math.random() < 0.05) {
-                diamond++;
-                alert("💎 Ого! Ты нашёл алмаз! 💎");
+            // Добавляем в начало списка
+            list.insertBefore(commentDiv, list.firstChild);
+
+            input.value = ''; // Очищаем поле
+            saveComments();
+        }
+
+        // Сохраняем комментарии в памяти браузера
+        function saveComments() {
+            // Получаем HTML всех комментариев
+            const commentsHTML = document.getElementById('commentsList').innerHTML;
+            localStorage.setItem('family_site_comments', commentsHTML);
+        }
+
+        // Загружаем сохранённые комментарии при открытии
+        window.onload = function() {
+            const saved = localStorage.getItem('family_site_comments');
+            if (saved) {
+                document.getElementById('commentsList').innerHTML = saved;
             }
-            
-            updateUI();
-        }
-
-        // 2. МАГАЗИН КИРОК
-        function openShop() {
-            document.getElementById('shopWindow').style.display = 'block';
-        }
-        function closeShop() {
-            document.getElementById('shopWindow').style.display = 'none';
-        }
-        function buyPickaxe(type) {
-            if (type === 'steel' && !hasSteel && gold >= 1000) {
-                gold -= 1000;
-                hasSteel = true;
-                power = 100; // Сила стальной кирки
-                saveData();
-                updateUI();
-                alert("🔩 Поздравляем! Теперь ты добываешь 100 руды за клик!");
-                closeShop();
-            } 
-            else if (type === 'diamond' && !hasDiamond && gold >= 5000) {
-                gold -= 5000;
-                hasDiamond = true;
-                power = 200; // Сила алмазной кирки
-                saveData();
-                updateUI();
-                alert("💎 Элита! Теперь ты добываешь 200 руды за клик!");
-                closeShop();
-            }
-        }
-
-        // 3. ФАБРИКА (Переплавка)
-        function smeltFactory() {
-            // Правило: 10 железа = 1 слиток
-            const needed = 10;
-            if (iron >= needed) {
-                iron -= needed;
-                ingots++;
-                saveData();
-                updateUI();
-                alert(`🏭 Успешно! Ты переплавил ${needed} железа в 1 стальной слиток.`);
-            } else {
-                alert(`❌ Не хватает железа! Нужно ${needed} единиц, а у тебя ${iron}.`);
-            }
-        }
-
-        // 4. РЫНОК (Продажа)
-        function sellMarket() {
-            let earned = 0;
-            
-            // Цены продажи
-            const priceIron = 5;      // 5 золота за 1 железо
-            const priceDiamond = 200; // 200 золота за 1 алмаз
-            const priceIngot = 50;   // 50 золота за 1 слиток
-
-            earned += iron * priceIron;
-            earned += diamond * priceDiamond;
-            earned += ingots * priceIngot;
-
-            gold += earned;
-            
-            // Обнуляем ресурсы после продажи
-            iron = 0;
-            diamond = 0;
-            ingots = 0;
-
-            saveData();
-            updateUI();
-            alert(`💰 Ты продал всё! Получено: ${earned} золота! 💰`);
-        }
-
-        updateUI();
+        };
     </script>
 </body>
 </html>
-
